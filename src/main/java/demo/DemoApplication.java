@@ -11,6 +11,9 @@ import demo.github.service.IssueService;
 import demo.github.service.MilestoneService;
 import demo.github.service.ReleaseService;
 import demo.github.service.RepositoryService;
+import demo.stackoverflow.Container;
+import demo.stackoverflow.Question;
+import demo.stackoverflow.service.QuestionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,9 +30,10 @@ public class DemoApplication {
 
 	@Bean
 	public ApplicationRunner commandLineRunner(
+			@Value("${github.org}") String org, @Value("${github.repo}") String repo,
 			RepositoryService repositoryService, IssueService issueService,
 			MilestoneService milestoneService, ReleaseService releaseService,
-			@Value("${github.org}") String org, @Value("${github.repo}") String repo) {
+			QuestionService questionService) {
 
 		return (args) -> {
 
@@ -37,6 +41,7 @@ public class DemoApplication {
 			List<Milestone> milestones = milestoneService.getScheduledMilestones(org, repo);
 			List<Issue> issues = issueService.getOpenIssuesForMilestone(org, repo, milestones.get(0).number());
 			List<Release> releases = releaseService.getRecentReleases(org, repo);
+			Container<Question> container = questionService.questions(repo, "votes");
 
 			logger.info(String.format("""
 
@@ -44,9 +49,11 @@ public class DemoApplication {
 					Scheduled milestones: %s
 					Issues for milestone %s%s
 					Recent releases: %s
+					StackOverflow questions: %s
 					""",
 					repository, formatList(milestones), milestones.get(0).title(),
-					formatList(issues), formatList(releases)));
+					formatList(issues), formatList(releases),
+					formatList(container.items())));
 		};
 	}
 
