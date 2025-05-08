@@ -1,0 +1,10 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Success!</title>
+</head>
+<body>
+    <a th:href="@{https://github.com/{organization}/{repository}/issues/{number}(organization=${organization},repository=${repository},number=${number})}">
+        Success!
+    </a>
+</body>
+</html>

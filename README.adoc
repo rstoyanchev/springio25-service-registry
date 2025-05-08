@@ -1,4 +1,52 @@
 
 This is a demo project for the Spring I/O talk:
-
 https://2025.springio.net/sessions/effortless-spring-interface-clients-with-auto-configuration-and-clients-registry/[Effortless Spring Interface Clients with Auto-Configuration and Clients Registry].
+
+== Building the Spring Security Branch
+
+Check out the branch and publish to your local Maven repository:
+
+[source,build]
+----
+git clone https://github.com/rwinch/spring-security.git
+cd spring-security
+git checkout -b interface-client origin/interface-clients
+./gradlew publishToMavenLocal
+----
+
+== Configuration
+
+This project will sign on using GitHub and then allow you to create an issue on your fork of the repository configured in the application.properties (by default this is spring-framework).
+
+=== Fork pf spring-framework
+
+First you need to ensure that you have a fork of that project with your username as the owner.
+This ensures that the issues are created on your fork instead of creating "noise" on the actual project.
+You can https://github.com/spring-projects/spring-framework/fork[click here] to create a fork if you don't already have one.
+
+=== Enable issues for your fork
+Next, you need to ensure that the settings for your fork have issues enabled so that you can create an issue.
+For example, if your username is rwinch, you would visit the URL https://github.com/rwinch/spring-framework/settings
+Scroll down till you see **Features** and ensure that **Issues** is selected.
+
+=== Register a new OAuth App
+
+Finally, you need to Register a new OAuth App.
+
+1) Navigate to https://github.com/settings/applications/new[Register a new OAuth app].
+
+2) Enter the following information for the form (leaving the omitted fields blank):
+
+* *Application name* Spring
+* *Homepage url* http://localhost:8080/
+* *Authorization callback URL* http://localhost:8080/login/oauth2/code/github
+
+3) Next click the *Generate a new client secret button*.
+
+=== Set the Client id and Secret
+
+1) Copy `src/main/resources/RENAME-application-secrets.properties` to the git ignored file (ensures you do not push secrets) `src/main/resources/application-secrets.properties`
+
+2) Copy the newly generated *Client secret* and paste it into the `src/main/resources/application-secrets.properties` file as the corresponding property's value.
+
+3) Copy the *Client id* and paste it into the `src/main/resources/application-secrets.properties` file as the corresponding property's value.

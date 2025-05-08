@@ -1,0 +1,18 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create an Issue</title>
+</head>
+<body>
+<form th:action="@{/issues}" th:object="${issue}" method="post">
+    <div>
+        <label for="title">Title</label>
+        <input id="title" type="text" th:field="*{title}"/>
+    </div>
+    <div>
+        <label for="body">Body</label>
+        <input id="body" type="text" th:field="*{body}"/>
+    </div>
+    <button type="submit">Create</button>
+</form>
+</body>
+</html>
