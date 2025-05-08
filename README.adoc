@@ -1,4 +1,41 @@
 
 This is a demo project for the Spring I/O talk:
-
 https://2025.springio.net/sessions/effortless-spring-interface-clients-with-auto-configuration-and-clients-registry/[Effortless Spring Interface Clients with Auto-Configuration and Clients Registry].
+
+== Building the Spring Security Branch
+
+Check out the branch and publish to your local Maven repository:
+
+[source,build]
+----
+git clone https://github.com/rwinch/spring-security.git
+cd spring-security
+git checkout -b interface-client origin/interface-clients
+./gradlew publishToMavenLocal
+----
+
+== Configuration
+
+This project will allow you to https://docs.github.com/en/rest/users/users?apiVersion=2022-11-28#get-the-authenticated-user[Get the authenticated user] using the GitHub APIs
+
+=== Register a new OAuth App
+
+To start, you need to Register a new OAuth App.
+
+1) Navigate to https://github.com/settings/applications/new[Register a new OAuth app].
+
+2) Enter the following information for the form (leaving the omitted fields blank):
+
+* *Application name* Spring
+* *Homepage url* http://localhost:8080/
+* *Authorization callback URL* http://localhost:8080/login/oauth2/code/github
+
+3) Next click the *Generate a new client secret button*.
+
+=== Set the Client id and Secret
+
+1) Copy `src/main/resources/RENAME-application-secrets.properties` to the git ignored file (ensures you do not push secrets) `src/main/resources/application-secrets.properties`
+
+2) Copy the newly generated *Client secret* and paste it into the `src/main/resources/application-secrets.properties` file as the corresponding property's value.
+
+3) Copy the *Client id* and paste it into the `src/main/resources/application-secrets.properties` file as the corresponding property's value.

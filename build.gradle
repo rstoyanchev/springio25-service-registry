@@ -13,6 +13,8 @@ java {
 	}
 }
 
+ext['spring-security.version'] = '7.0.0-SNAPSHOT'
+ext['spring-framework.version'] = '7.0.0-SNAPSHOT'
 
 repositories {
 	mavenCentral()
@@ -24,6 +26,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
