@@ -16,12 +16,8 @@
 
 package demo;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.ApiVersionInserter;
 import org.springframework.web.client.support.RestClientHttpServiceGroupConfigurer;
 import org.springframework.web.service.registry.ImportHttpServices;
 
@@ -30,28 +26,18 @@ import org.springframework.web.service.registry.ImportHttpServices;
 @Configuration
 public class DemoConfig {
 
-	private static final Logger logger = LogManager.getLogger(DemoApplication.class);
-
 	@Bean
 	RestClientHttpServiceGroupConfigurer groupConfigurer() {
 		return groups -> {
 
 			groups.filterByName("github")
 					.configureClient(builder -> builder
-							.defaultApiVersion("2022-11-28")
-							.apiVersionInserter(ApiVersionInserter.fromHeader("X-GitHub-Api-Version").build()));
+							.baseUrl("https://api.github.com")
+							.defaultHeader("Accept", "application/vnd.github.v3+json"));
 
 			groups.filterByName("stackoverflow")
 					.configureClient(builder -> builder
-							.defaultApiVersion("2.4")
-							.apiVersionInserter(ApiVersionInserter.fromPathSegment(0).build()));
-
-			groups.configureClient(builder -> builder
-					.requestInterceptor((request, body, execution) -> {
-						logger.info("Performing request\n" +
-								request.getMethod() + " " + request.getURI() + "\n" + request.getHeaders() + "\n");
-						return execution.execute(request, body);
-					}));
+							.baseUrl("https://api.stackexchange.com?site=stackoverflow"));
 		};
 	}
 
