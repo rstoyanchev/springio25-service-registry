@@ -16,8 +16,21 @@
 
 package demo;
 
+import java.io.IOException;
+import java.net.URI;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.web.client.ApiVersionInserter;
 import org.springframework.web.client.support.RestClientHttpServiceGroupConfigurer;
 import org.springframework.web.service.registry.ImportHttpServices;
 
@@ -27,6 +40,9 @@ import org.springframework.web.service.registry.ImportHttpServices;
 @Configuration
 public class DemoConfig {
 
+	private static final Logger logger = LogManager.getLogger(DemoConfig.class);
+
+
 	@Bean
 	RestClientHttpServiceGroupConfigurer groupConfigurer() {
 		return groups -> {
@@ -34,12 +50,34 @@ public class DemoConfig {
 			groups.filterByName("github")
 					.forEachClient((group, builder) -> builder
 							.baseUrl("https://api.github.com")
-							.defaultHeader("Accept", "application/vnd.github.v3+json"));
+							.defaultHeader("Accept", "application/vnd.github.v3+json")
+							.defaultApiVersion("2022-11-28")
+							.apiVersionInserter(ApiVersionInserter.useHeader("X-GitHub-Api-Version")));
 
 			groups.filterByName("stackoverflow")
 					.forEachClient((group, builder) -> builder
-							.baseUrl("https://api.stackexchange.com?site=stackoverflow"));
+							.baseUrl("https://api.stackexchange.com?site=stackoverflow")
+							.defaultApiVersion("2.4")
+							.apiVersionInserter(ApiVersionInserter.usePathSegment(0)));
+
+			groups.forEachClient((cb, builder) -> builder.requestInterceptor(new LoggingInterceptor()));
 		};
+	}
+
+
+	private static class LoggingInterceptor implements ClientHttpRequestInterceptor {
+
+
+		@Override
+		public ClientHttpResponse intercept(
+				HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+
+			HttpMethod httpMethod = request.getMethod();
+			URI uri = request.getURI();
+			HttpHeaders headers = request.getHeaders();
+			logger.info("Performing request\n" + httpMethod + " " + uri + "\n" + headers + "\n");
+			return execution.execute(request, body);
+		}
 	}
 
 }
