@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.support.RestClientHttpServiceGroupConfigurer;
 import org.springframework.web.service.registry.ImportHttpServices;
 
+
 @ImportHttpServices(group = "github", basePackages = "demo.github")
 @ImportHttpServices(group = "stackoverflow", basePackages = "demo.stackoverflow")
 @Configuration
