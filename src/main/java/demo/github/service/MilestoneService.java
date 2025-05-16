@@ -30,8 +30,4 @@ public interface MilestoneService {
 	@GetExchange
 	List<Milestone> getMilestones(@PathVariable String org, @PathVariable String repo);
 
-	default List<Milestone> getScheduledMilestones(@PathVariable String org, @PathVariable String repo) {
-		return getMilestones(org, repo).stream().filter(Milestone::hasDueDate).toList();
-	}
-
 }

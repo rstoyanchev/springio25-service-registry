@@ -38,15 +38,17 @@ public class DemoApplication {
 		return (args) -> {
 
 			Repository repository = repositoryService.getRepository(org, repo);
-			List<Milestone> milestones = milestoneService.getScheduledMilestones(org, repo);
+			List<Milestone> milestones = milestoneService.getMilestones(org, repo);
 			List<Issue> issues = issueService.getOpenIssuesForMilestone(org, repo, milestones.get(0).number());
 			List<Release> releases = releaseService.getRecentReleases(org, repo);
 			Container<Question> container = questionService.questions(repo, "votes");
 
 			logger.info(String.format("""
 
+
 					%s
-					Scheduled milestones: %s
+
+					Milestones: %s
 					Issues for milestone %s%s
 					Recent releases: %s
 					StackOverflow questions: %s

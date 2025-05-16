@@ -6,4 +6,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'springio25-demo'
+rootProject.name = 'springio25-service-registry'

@@ -1,14 +1,4 @@
 
-This is a demo project that uses a WIP branch of Spring Boot building against Spring Framework 7.
+This is a demo project for the Spring I/O talk:
 
-== Building the Spring Boot Branch
-
-Check out the branch and publish to your local Maven repository:
-
-[source,build]
-----
-git clone https://github.com/philwebb/spring-boot.git
-cd spring-boot
-git switch interface-client-6/
-./gradlew publishToMavenLocal -x spring-boot-project:spring-boot-docs:aggregatedJavadoc
-----
+https://2025.springio.net/sessions/effortless-spring-interface-clients-with-auto-configuration-and-clients-registry/[Effortless Spring Interface Clients with Auto-Configuration and Clients Registry].
