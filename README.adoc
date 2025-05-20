@@ -3,7 +3,7 @@ This is a demo project for the Spring I/O talk:
 
 https://2025.springio.net/sessions/effortless-spring-interface-clients-with-auto-configuration-and-clients-registry/[Effortless Spring Interface Clients with Auto-Configuration and Clients Registry].
 
-Additional branches:
+== Additional branches
 
 1) For API versioning, see the `versioning` branch.
 
