@@ -1,4 +1,4 @@
-package demo;
+package demo.github.controllers;
 
 import java.security.Principal;
 import java.util.Map;

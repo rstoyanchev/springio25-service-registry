@@ -17,6 +17,7 @@ ext['spring-security.version'] = '7.0.0-SNAPSHOT'
 ext['spring-framework.version'] = '7.0.0-SNAPSHOT'
 
 repositories {
+	mavenLocal()
 	mavenCentral()
 	maven { url 'https://repo.spring.io/milestone' }
 	maven { url 'https://repo.spring.io/snapshot' }
