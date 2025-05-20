@@ -32,12 +32,12 @@ public class DemoConfig {
 		return groups -> {
 
 			groups.filterByName("github")
-					.configureClient(builder -> builder
+					.forEachClient((group, builder) -> builder
 							.baseUrl("https://api.github.com")
 							.defaultHeader("Accept", "application/vnd.github.v3+json"));
 
 			groups.filterByName("stackoverflow")
-					.configureClient(builder -> builder
+					.forEachClient((group, builder) -> builder
 							.baseUrl("https://api.stackexchange.com?site=stackoverflow"));
 		};
 	}

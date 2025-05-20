@@ -29,6 +29,12 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+//configurations.configureEach {
+//	resolutionStrategy{
+//		cacheChangingModulesFor 0, 'seconds'
+//	}
+//}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
