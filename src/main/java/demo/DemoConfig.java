@@ -18,13 +18,15 @@ package demo;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.web.client.support.OAuth2RestClientHttpServiceGroupConfigurer;
 import org.springframework.web.client.support.RestClientHttpServiceGroupConfigurer;
 import org.springframework.web.service.registry.ImportHttpServices;
 
 
 @ImportHttpServices(group = "github", basePackages = "demo.github")
 @ImportHttpServices(group = "stackoverflow", basePackages = "demo.stackoverflow")
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class DemoConfig {
 
 	@Bean
@@ -40,6 +42,11 @@ public class DemoConfig {
 					.forEachClient((group, builder) -> builder
 							.baseUrl("https://api.stackexchange.com?site=stackoverflow"));
 		};
+	}
+
+	@Bean
+	OAuth2RestClientHttpServiceGroupConfigurer securityConfigurer(OAuth2AuthorizedClientManager manager) {
+		return OAuth2RestClientHttpServiceGroupConfigurer.from(manager);
 	}
 
 }

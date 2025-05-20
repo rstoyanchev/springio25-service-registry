@@ -1,4 +1,4 @@
-package demo;
+package demo.github.controller;
 
 import demo.github.User;
 import demo.github.service.UserService;
