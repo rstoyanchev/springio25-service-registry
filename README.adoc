@@ -1,7 +1,5 @@
 
-This is a demo project for the Spring I/O talk:
-
-https://2025.springio.net/sessions/effortless-spring-interface-clients-with-auto-configuration-and-clients-registry/[Effortless Spring Interface Clients with Auto-Configuration and Clients Registry].
+Demo and springio-2025-service-registry.pdf[slides] for https://2025.springio.net/sessions/effortless-spring-interface-clients-with-auto-configuration-and-clients-registry/[Effortless Spring HTTP Interfaces with Client Registry] talk at Spring I/O 2025.
 
 == Additional branches
 
