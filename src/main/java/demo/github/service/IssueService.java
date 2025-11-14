@@ -34,9 +34,11 @@ import static java.util.Comparator.nullsLast;
 public interface IssueService {
 
 	@GetExchange
-	List<Issue> getIssuesForMilestone(@PathVariable String org, @PathVariable String repo,
-			@RequestParam int milestone, @RequestParam State state);
+	List<Issue> getIssuesForMilestone(
+			@PathVariable String org, @PathVariable String repo, @RequestParam int milestone,
+			@RequestParam State state);
 
+	@SuppressWarnings("DataFlowIssue")
 	default List<Issue> getOpenIssuesForMilestone(String org, String repo, int milestone) {
 		List<Issue> issues = getIssuesForMilestone(org, repo, milestone, State.open);
 		issues.sort(comparing(Issue::assignee, nullsLast(comparing(Assignee::login))));
