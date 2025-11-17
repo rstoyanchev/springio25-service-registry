@@ -16,30 +16,82 @@
 
 package demo;
 
+import demo.github.service.IssueService;
+import demo.github.service.MilestoneService;
+import demo.github.service.ReleaseService;
+import demo.github.service.RepositoryService;
+import demo.stackoverflow.service.QuestionService;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.support.RestClientHttpServiceGroupConfigurer;
-import org.springframework.web.service.registry.ImportHttpServices;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.support.RestClientAdapter;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
-
-@ImportHttpServices(group = "github", basePackages = "demo.github")
-@ImportHttpServices(group = "stackoverflow", basePackages = "demo.stackoverflow")
 @Configuration
 public class DemoConfig {
 
+	// Clients
+
 	@Bean
-	RestClientHttpServiceGroupConfigurer groupConfigurer() {
-		return groups -> {
+	RestClient githubRestClient() {
+		return RestClient.builder()
+				.baseUrl("https://api.github.com")
+				.defaultHeader("Accept", "application/vnd.github.v3+json")
+				.build();
+	}
 
-			groups.filterByName("github")
-					.forEachClient((group, builder) -> builder
-							.baseUrl("https://api.github.com")
-							.defaultHeader("Accept", "application/vnd.github.v3+json"));
+	@Bean
+	RestClient stackOverflowRestClient() {
+		return RestClient.builder()
+				.baseUrl("https://api.stackexchange.com?site=stackoverflow")
+				.build();
+	}
 
-			groups.filterByName("stackoverflow")
-					.forEachClient((group, builder) -> builder
-							.baseUrl("https://api.stackexchange.com?site=stackoverflow"));
-		};
+	// HTTP Service proxy factories
+
+	@Bean
+	HttpServiceProxyFactory githubProxyFactory(RestClient githubRestClient) {
+		return HttpServiceProxyFactory.builder()
+				.exchangeAdapter(RestClientAdapter.create(githubRestClient))
+				.build();
+	}
+
+
+	@Bean
+	HttpServiceProxyFactory stackOverflowProxyFactory(RestClient stackOverflowRestClient) {
+		return HttpServiceProxyFactory.builder()
+				.exchangeAdapter(RestClientAdapter.create(stackOverflowRestClient))
+				.build();
+	}
+
+	// GitHub HTTP Service proxies
+
+	@Bean
+	IssueService issueService(HttpServiceProxyFactory githubProxyFactory) {
+		return githubProxyFactory.createClient(IssueService.class);
+	}
+
+	@Bean
+	MilestoneService milestoneService(HttpServiceProxyFactory githubProxyFactory) {
+		return githubProxyFactory.createClient(MilestoneService.class);
+	}
+
+	@Bean
+	ReleaseService releaseService(HttpServiceProxyFactory githubProxyFactory) {
+		return githubProxyFactory.createClient(ReleaseService.class);
+	}
+
+	@Bean
+	RepositoryService repositoryService(HttpServiceProxyFactory githubProxyFactory) {
+		return githubProxyFactory.createClient(RepositoryService.class);
+	}
+
+	// StackOverflow HTTP Service proxies
+
+	@Bean
+	QuestionService questionService(HttpServiceProxyFactory stackOverflowProxyFactory) {
+		return stackOverflowProxyFactory.createClient(QuestionService.class);
 	}
 
 }
